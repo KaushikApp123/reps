@@ -1,26 +1,185 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Surfaces — a deliberate elevation ladder rather than one flat grey. */
+  --background: #08080a;
+  --surface: #111115;
+  --surface-2: #17171d;
+  --surface-3: #1e1e26;
+  --border: #26262f;
+  --border-strong: #363642;
+
+  /* Ink */
+  --foreground: #f6f6f8;
+  --muted: #9c9caa;
+  --subtle: #6a6a78;
+
+  /* Brand */
+  --accent: #7c5cff;
+  --accent-hover: #8f74ff;
+  --accent-soft: #1c1740;
+  --accent-ring: rgba(124, 92, 255, 0.35);
+
+  /* Semantic */
+  --success: #34d399;
+  --danger: #f87171;
+  --gold: #fbbf24;
+
+  /* Radii */
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 @theme inline {
   --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
   --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-subtle: var(--subtle);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-soft: var(--accent-soft);
+  --color-success: var(--success);
+  --color-danger: var(--danger);
+  --color-gold: var(--gold);
+
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  background: var(--background);
+  /* Stop iOS rubber-band from revealing white behind the app. */
+  overscroll-behavior-y: none;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overscroll-behavior-y: contain;
+  /* Kill the grey flash when tapping controls on mobile. */
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Inputs must be >=16px or iOS zooms the viewport on focus. */
+input,
+select,
+textarea,
+button {
+  font-size: 16px;
+  font-family: inherit;
+}
+
+/* Strip the spinner from number inputs — we supply +/- buttons. */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+/* Headings read tighter than body copy at display sizes. */
+h1,
+h2,
+h3 {
+  letter-spacing: -0.02em;
+}
+
+::selection {
+  background: var(--accent);
+  color: white;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@utility safe-bottom {
+  padding-bottom: calc(env(safe-area-inset-bottom) + var(--tw-safe-extra, 0px));
+}
+
+/* Tactile press feedback — the main thing that makes a web app feel native. */
+@utility tap {
+  transition: transform 140ms var(--ease-out), background-color 140ms var(--ease-out),
+    border-color 140ms var(--ease-out), opacity 140ms var(--ease-out);
+  &:active {
+    transform: scale(0.97);
+  }
+}
+
+@utility card-glow {
+  box-shadow:
+    0 1px 0 0 rgba(255, 255, 255, 0.03) inset,
+    0 8px 24px -12px rgba(0, 0, 0, 0.8);
+}
+
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.92) translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@utility animate-pop {
+  animation: pop-in 320ms var(--ease-spring) both;
+}
+
+@utility animate-rise {
+  animation: slide-up 380ms var(--ease-out) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .tap:active {
+    transform: none;
+  }
 }
