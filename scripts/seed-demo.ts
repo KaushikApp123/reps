@@ -86,6 +86,17 @@ const WEEKS = 10;
 /** Mon / Wed / Fri, matching the three-day split. */
 const DAY_OFFSETS = [0, 2, 4];
 
+/**
+ * How many weight increments have been earned by each week. Real training
+ * isn't monotonic: progress stalls (weeks 5-6) and a deload week pulls the
+ * load back before building again. Without this every single set is a PR,
+ * which is technically what linear progression produces but makes the PR
+ * badge meaningless.
+ */
+const JUMPS = [0, 0, 1, 1, 2, 2, 2, 3, 3, 4];
+/** Week index trained lighter on purpose. */
+const DELOAD_WEEK = 6;
+
 function parseTop(reps: string): number {
   const n = reps.match(/\d+/g)!;
   return parseInt(n[n.length - 1], 10);
@@ -215,21 +226,27 @@ async function main() {
 
       for (const ex of block.exercises) {
         const id = byName.get(ex.name)!.id;
-        // Progress every other week; a "stalls" lift stops climbing near the end.
-        const cycles = Math.floor(w / 2);
-        const capped = ex.stalls ? Math.min(cycles, 2) : cycles;
-        const weight = ex.start + capped * ex.step;
-
         const low = parseLow(ex.reps);
         const top = parseTop(ex.reps);
-        // Reps drift up within the range on odd weeks, resetting after a jump.
-        const reps = w % 2 === 0 ? low + 1 : top;
+
+        // A "stalls" lift stops earning increments, so the summary's plateau
+        // nudge has something real to fire on.
+        const earned = ex.stalls ? Math.min(JUMPS[w], 2) : JUMPS[w];
+        const isDeload = w === DELOAD_WEEK;
+        const base = ex.start + earned * ex.step;
+        const weight = isDeload ? Math.round(base * 0.9) : base;
+
+        // Fresh weight → reps reset to the bottom of the range, then build.
+        const justJumped = w > 0 && JUMPS[w] > JUMPS[w - 1] && !ex.stalls;
+        const reps = isDeload ? low : justJumped ? low : Math.min(top, low + 2);
 
         for (let s = 0; s < ex.sets; s++) {
           const setReps = Math.max(low, reps - (s > 1 ? 1 : 0));
           const best = bestSoFar.get(id) ?? { weight: 0, volume: 0 };
           const volume = weight * setReps;
-          const isPR = weight > best.weight || volume > best.volume;
+          // Only the top set of a session can set a record — flagging every
+          // set inflates the count and cheapens the badge.
+          const isPR = s === 0 && (weight > best.weight || volume > best.volume);
           if (isPR) {
             bestSoFar.set(id, {
               weight: Math.max(best.weight, weight),
