@@ -35,7 +35,10 @@ async function rest(path, init = {}) {
   if (!res.ok) {
     throw new Error(`PostgREST ${res.status} on ${path}: ${await res.text()}`);
   }
-  return res.status === 204 ? null : res.json();
+  // A write sent with Prefer: return=minimal answers 201 with an empty body,
+  // so parse defensively rather than assuming JSON on any non-204.
+  const text = await res.text();
+  return text ? JSON.parse(text) : null;
 }
 
 /** Monday 00:00 UTC of the week containing `d`. */
