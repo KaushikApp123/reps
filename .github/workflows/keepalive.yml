@@ -1,0 +1,44 @@
+name: Keep database awake
+
+# Supabase pauses free-tier projects after 7 days without database activity.
+# A paused project takes the whole app down until it is manually resumed, so
+# this pings a trivial read every three days to keep the clock reset.
+#
+# Note: GitHub disables scheduled workflows on repositories with no commits
+# for 60 days. If this repo goes quiet for that long, re-enable the workflow
+# from the Actions tab (or push any commit).
+
+on:
+  schedule:
+    - cron: "0 6 */3 * *" # 06:00 UTC, every third day
+  workflow_dispatch: # allows a manual run from the Actions tab
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Query Supabase
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: |
+          if [ -z "$SUPABASE_URL" ] || [ -z "$SUPABASE_ANON_KEY" ]; then
+            echo "::error::SUPABASE_URL / SUPABASE_ANON_KEY repository secrets are not set."
+            exit 1
+          fi
+
+          status=$(curl -s -o /tmp/body.txt -w "%{http_code}" \
+            "$SUPABASE_URL/rest/v1/exercises?select=id&limit=1" \
+            -H "apikey: $SUPABASE_ANON_KEY" \
+            -H "Authorization: Bearer $SUPABASE_ANON_KEY")
+
+          echo "HTTP $status"
+          cat /tmp/body.txt
+
+          # 2xx means the database answered, which is all we need.
+          if [ "$status" -lt 200 ] || [ "$status" -ge 300 ]; then
+            echo "::error::Supabase did not respond successfully (HTTP $status)."
+            exit 1
+          fi
+
+          echo "Database is awake."
