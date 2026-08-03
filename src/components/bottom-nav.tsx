@@ -37,7 +37,7 @@ export default function BottomNav() {
                 href={href}
                 aria-current={active ? "page" : undefined}
                 className={`tap flex flex-col items-center gap-1 rounded-[var(--radius-md)] py-2 ${
-                  active ? "text-accent" : "text-subtle hover:text-muted"
+                  active ? "text-accent-text" : "text-subtle hover:text-muted"
                 }`}
               >
                 <Icon active={active} />

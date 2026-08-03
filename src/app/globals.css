@@ -1,37 +1,45 @@
 @import "tailwindcss";
 
 :root {
-  /* Surfaces — a deliberate elevation ladder rather than one flat grey. */
-  --background: #08080a;
-  --surface: #111115;
-  --surface-2: #17171d;
-  --surface-3: #1e1e26;
-  --border: #26262f;
-  --border-strong: #363642;
+  /* Surfaces — near-black with a faint warm cast so red sits naturally on it. */
+  --background: #0b0b0c;
+  --surface: #141416;
+  --surface-2: #1b1b1e;
+  --surface-3: #232327;
+  --border: #2b2b30;
+  --border-strong: #3a3a41;
 
   /* Ink */
-  --foreground: #f6f6f8;
-  --muted: #9c9caa;
-  --subtle: #6a6a78;
+  --foreground: #f4f4f5;
+  --muted: #a1a1a8;
+  --subtle: #6f6f78;
 
-  /* Brand */
-  --accent: #7c5cff;
-  --accent-hover: #8f74ff;
-  --accent-soft: #1c1740;
-  --accent-ring: rgba(124, 92, 255, 0.35);
+  /* Brand — NC State Wolfpack Red. #cc0000 carries white text at 4.6:1;
+     --accent-text is the lighter step used for red text on dark (6.5:1),
+     since the brand red alone only clears the large-text threshold. */
+  --accent: #cc0000;
+  --accent-hover: #e00b0b;
+  --accent-text: #ff5a5a;
+  --accent-soft: #2a0c0e;
+  --accent-ring: rgba(204, 0, 0, 0.45);
 
-  /* Semantic */
-  --success: #34d399;
-  --danger: #f87171;
-  --gold: #fbbf24;
+  /* Semantic. Danger is deliberately a lighter, cooler red than the brand so
+     an error never reads as a branded element. */
+  --success: #3fb950;
+  --danger: #ff6b6b;
+  --gold: #f0b429;
 
-  /* Radii */
-  --radius-sm: 10px;
-  --radius-md: 14px;
-  --radius-lg: 20px;
-  --radius-xl: 28px;
+  /* Sequential chart ramp — single hue, validated against --surface. */
+  --ramp-1: #941f1f;
+  --ramp-2: #c02c2c;
+  --ramp-3: #e85454;
+  --ramp-4: #ff8f8f;
 
-  /* Motion */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 22px;
+
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
@@ -48,6 +56,7 @@
   --color-subtle: var(--subtle);
   --color-accent: var(--accent);
   --color-accent-hover: var(--accent-hover);
+  --color-accent-text: var(--accent-text);
   --color-accent-soft: var(--accent-soft);
   --color-success: var(--success);
   --color-danger: var(--danger);
@@ -58,37 +67,44 @@
   --radius-lg: var(--radius-lg);
   --radius-xl: var(--radius-xl);
 
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-plex-sans);
+  --font-display: var(--font-archivo);
+  --font-mono: var(--font-plex-mono);
 }
 
 html {
   background: var(--background);
-  /* Stop iOS rubber-band from revealing white behind the app. */
   overscroll-behavior-y: none;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  font-family: var(--font-plex-sans), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   overscroll-behavior-y: contain;
-  /* Kill the grey flash when tapping controls on mobile. */
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Inputs must be >=16px or iOS zooms the viewport on focus. */
+/* Archivo carries the headings — squarer and more editorial than the
+   geometric sans every dashboard template ships with. */
+h1,
+h2,
+h3 {
+  font-family: var(--font-archivo), var(--font-plex-sans), sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+
 input,
 select,
 textarea,
 button {
-  font-size: 16px;
+  font-size: 16px; /* below 16px iOS zooms the viewport on focus */
   font-family: inherit;
 }
 
-/* Strip the spinner from number inputs — we supply +/- buttons. */
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -99,28 +115,29 @@ input[type="number"] {
   appearance: textfield;
 }
 
-/* Headings read tighter than body copy at display sizes. */
-h1,
-h2,
-h3 {
-  letter-spacing: -0.02em;
-}
-
 ::selection {
   background: var(--accent);
   color: white;
 }
 
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--accent-text);
   outline-offset: 2px;
 }
 
-@utility safe-bottom {
-  padding-bottom: calc(env(safe-area-inset-bottom) + var(--tw-safe-extra, 0px));
+/* Weights, reps, timers and stats — monospaced figures so digits don't
+   jitter as they count. */
+@utility num {
+  font-family: var(--font-plex-mono), ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
 }
 
-/* Tactile press feedback — the main thing that makes a web app feel native. */
+@utility display {
+  font-family: var(--font-archivo), sans-serif;
+  letter-spacing: -0.02em;
+}
+
 @utility tap {
   transition: transform 140ms var(--ease-out), background-color 140ms var(--ease-out),
     border-color 140ms var(--ease-out), opacity 140ms var(--ease-out);
@@ -131,8 +148,8 @@ h3 {
 
 @utility card-glow {
   box-shadow:
-    0 1px 0 0 rgba(255, 255, 255, 0.03) inset,
-    0 8px 24px -12px rgba(0, 0, 0, 0.8);
+    0 1px 0 0 rgba(255, 255, 255, 0.035) inset,
+    0 8px 24px -14px rgba(0, 0, 0, 0.9);
 }
 
 @keyframes pop-in {
@@ -154,12 +171,6 @@ h3 {
   to {
     opacity: 1;
     transform: translateY(0);
-  }
-}
-
-@keyframes shimmer {
-  100% {
-    transform: translateX(100%);
   }
 }
 

@@ -118,7 +118,7 @@ export default async function SummaryPage({
                 return (
                   <li key={i} className="flex items-baseline justify-between gap-3 text-sm">
                     <span className="truncate">{ex?.name}</span>
-                    <span className="shrink-0 font-semibold tabular-nums text-gold">
+                    <span className="shrink-0 font-semibold num text-gold">
                       {p.weight}
                       {unit} × {p.reps}
                     </span>

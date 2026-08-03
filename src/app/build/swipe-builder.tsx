@@ -168,7 +168,7 @@ export default function SwipeBuilder({
             Muscle coverage
           </h2>
           <span
-            className={`text-lg font-bold tabular-nums ${
+            className={`text-lg font-bold num ${
               complete ? "text-success" : "text-foreground"
             }`}
           >
@@ -229,7 +229,7 @@ export default function SwipeBuilder({
       {/* Fill the gaps */}
       {suggestions.some((s) => s.options.length > 0) && (
         <section className="animate-rise mb-5 rounded-[var(--radius-lg)] border border-accent/40 bg-accent-soft p-4">
-          <h2 className="text-[13px] font-semibold uppercase tracking-[0.1em] text-accent">
+          <h2 className="text-[13px] font-semibold uppercase tracking-[0.1em] text-accent-text">
             Fill the gaps
           </h2>
           <div className="mt-3 flex flex-col gap-3">
@@ -310,7 +310,7 @@ export default function SwipeBuilder({
 
                   <div>
                     {fillsGap && (
-                      <p className="mb-2 text-xs font-semibold uppercase tracking-[0.08em] text-accent">
+                      <p className="mb-2 text-xs font-semibold uppercase tracking-[0.08em] text-accent-text">
                         ★ Fills a gap
                       </p>
                     )}
@@ -338,7 +338,7 @@ export default function SwipeBuilder({
       </div>
 
       {flash && (
-        <p className="animate-pop mt-3 text-center text-sm text-accent" role="status">
+        <p className="animate-pop mt-3 text-center text-sm text-accent-text" role="status">
           {flash}
         </p>
       )}
@@ -368,7 +368,7 @@ export default function SwipeBuilder({
                 key={p.id}
                 className="flex items-center gap-3 rounded-[var(--radius-md)] border border-border bg-surface px-3.5 py-3"
               >
-                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-surface-3 text-[11px] font-semibold tabular-nums text-muted">
+                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-surface-3 text-[11px] font-semibold num text-muted">
                   {i + 1}
                 </span>
                 <div className="min-w-0 flex-1">

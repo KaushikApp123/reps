@@ -31,7 +31,7 @@ export default async function LoginPage({
               />
             </svg>
           </div>
-          <h1 className="text-4xl font-bold tracking-tight">Reps</h1>
+          <h1 className="text-4xl font-bold tracking-tight">SetSwipe</h1>
           <p className="mx-auto mt-2 max-w-[28ch] text-[15px] leading-relaxed text-muted">
             Swipe to build your routine. Train. Track every rep.
           </p>

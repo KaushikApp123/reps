@@ -93,7 +93,7 @@ export function Hero({
       <p className="text-xs font-medium uppercase tracking-[0.12em] text-subtle">
         {label}
       </p>
-      <p className="mt-1 text-5xl font-bold tabular-nums tracking-tight">{value}</p>
+      <p className="mt-1 text-5xl font-bold num tracking-tight">{value}</p>
       {sub && <p className="mt-1 text-sm text-muted">{sub}</p>}
     </div>
   );
@@ -112,7 +112,7 @@ export function Stat({
 }) {
   const valueTone =
     tone === "accent"
-      ? "text-accent"
+      ? "text-accent-text"
       : tone === "success"
         ? "text-success"
         : tone === "gold"
@@ -124,7 +124,7 @@ export function Stat({
       <div className="text-[10px] font-medium uppercase tracking-[0.1em] text-subtle">
         {label}
       </div>
-      <div className={`mt-1.5 text-2xl font-bold tabular-nums tracking-tight ${valueTone}`}>
+      <div className={`mt-1.5 text-2xl font-bold num tracking-tight ${valueTone}`}>
         {value}
       </div>
       {sub ? <div className="mt-0.5 text-[11px] text-subtle">{sub}</div> : null}
@@ -143,7 +143,7 @@ export function Chip({
 }) {
   const tones = {
     default: "bg-surface-3 text-muted border-border",
-    accent: "bg-accent-soft text-accent border-accent/40",
+    accent: "bg-accent-soft text-accent-text border-accent/50",
     success: "bg-success/12 text-success border-success/30",
     gold: "bg-gold/12 text-gold border-gold/30",
     muted: "bg-surface-2 text-subtle border-border",

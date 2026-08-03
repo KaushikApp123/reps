@@ -230,7 +230,7 @@ export default function ActiveWorkout({
         )}
 
         <div className="mt-4 flex items-center gap-2 text-sm">
-          <span className="rounded-[var(--radius-sm)] bg-surface-3 px-2.5 py-1.5 font-semibold tabular-nums">
+          <span className="rounded-[var(--radius-sm)] bg-surface-3 px-2.5 py-1.5 font-semibold num">
             {item.targetSets} × {item.targetReps}
           </span>
           <span className="text-muted">target</span>
@@ -271,7 +271,7 @@ export default function ActiveWorkout({
             {doneSets.map((s, i) => (
               <li
                 key={i}
-                className={`animate-pop rounded-[var(--radius-sm)] border px-2.5 py-1.5 text-sm tabular-nums ${
+                className={`animate-pop rounded-[var(--radius-sm)] border px-2.5 py-1.5 text-sm num ${
                   s.isPR
                     ? "border-gold/50 bg-gold/10 text-gold"
                     : "border-border bg-surface-2 text-muted"
@@ -451,7 +451,7 @@ function RestTimer({
             />
           </svg>
           <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className="text-3xl font-bold tabular-nums">{formatTime(remaining)}</span>
+            <span className="text-3xl font-bold num">{formatTime(remaining)}</span>
             <span className="text-[10px] uppercase tracking-[0.12em] text-subtle">
               Rest
             </span>
@@ -513,7 +513,7 @@ function NumberField({
           inputMode="decimal"
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="h-12 w-full min-w-0 rounded-[var(--radius-sm)] border border-border bg-surface-2 text-center text-lg font-semibold tabular-nums outline-none focus:border-accent"
+          className="h-12 w-full min-w-0 rounded-[var(--radius-sm)] border border-border bg-surface-2 text-center text-lg font-semibold num outline-none focus:border-accent"
         />
         <button
           type="button"

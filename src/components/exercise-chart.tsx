@@ -149,7 +149,7 @@ export default function ExerciseChart({
           <path
             d={path}
             fill="none"
-            stroke="#8878ff"
+            stroke="var(--ramp-3)"
             strokeWidth={2}
             strokeLinejoin="round"
             strokeLinecap="round"
@@ -162,7 +162,7 @@ export default function ExerciseChart({
               cx={x(i)}
               cy={y(p.topWeight)}
               r={hover === i ? 5 : 4}
-              fill="#8878ff"
+              fill="var(--ramp-3)"
               stroke="var(--surface)"
               strokeWidth={2}
             />
@@ -212,7 +212,7 @@ export default function ExerciseChart({
         <div className="mt-2 min-h-[38px] px-1">
           {hovered ? (
             <div className="rounded-lg bg-surface-2 px-3 py-2 text-xs">
-              <div className="font-semibold tabular-nums">
+              <div className="font-semibold num">
                 {hovered.topWeight} {unit} top set
               </div>
               <div className="text-muted">
@@ -246,7 +246,7 @@ export default function ExerciseChart({
                 <th className="py-1.5 font-medium">Volume ({unit})</th>
               </tr>
             </thead>
-            <tbody className="tabular-nums">
+            <tbody className="num">
               {pts.map((p, i) => (
                 <tr key={i} className="border-t border-border">
                   <td className="py-1.5 pr-3">

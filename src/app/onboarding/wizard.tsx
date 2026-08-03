@@ -45,7 +45,7 @@ export default function OnboardingWizard({ name }: { name: string | null }) {
                     : "border-border bg-surface hover:border-border-strong"
                 }`}
               >
-                <span className="text-xl font-bold tabular-nums">{d}</span>
+                <span className="text-xl font-bold num">{d}</span>
                 <span className="text-[10px] opacity-70">days</span>
               </button>
             ))}

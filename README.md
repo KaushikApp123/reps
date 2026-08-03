@@ -1,4 +1,4 @@
-# Reps
+# SetSwipe
 
 A workout app that pairs Tinder-style exercise discovery with training logic grounded in
 exercise-science research. Built as an installable PWA — add it to your home screen and it
@@ -127,8 +127,8 @@ drift.
 ## Running locally
 
 ```bash
-git clone https://github.com/KaushikApp123/reps.git
-cd reps
+git clone https://github.com/KaushikApp123/setswipe.git
+cd setswipe
 npm install
 cp .env.example .env.local   # add your Supabase URL + anon key
 ```

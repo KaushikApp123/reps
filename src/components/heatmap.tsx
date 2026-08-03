@@ -1,16 +1,16 @@
 import type { HeatmapCell } from "@/lib/stats";
 
 /**
- * Single-hue sequential ramp, validated against the dark chart surface
- * (#16161a) — the light end clears the 2:1 contrast floor. Level 0 is the
- * recessive empty-cell surface, not part of the ramp.
+ * Single-hue sequential ramp defined in globals.css and validated against the
+ * dark chart surface (#141416) — the light end clears the 2:1 contrast floor.
+ * Level 0 is the recessive empty-cell surface, not part of the ramp.
  */
 const LEVEL_COLOR: Record<number, string> = {
   0: "var(--surface-2)",
-  1: "#4a41a3",
-  2: "#6558d4",
-  3: "#8878ff",
-  4: "#b0a8ff",
+  1: "var(--ramp-1)",
+  2: "var(--ramp-2)",
+  3: "var(--ramp-3)",
+  4: "var(--ramp-4)",
 };
 
 const DAY_LABELS = ["Mon", "", "Wed", "", "Fri", "", "Sun"];

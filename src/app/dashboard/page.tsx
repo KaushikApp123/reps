@@ -97,7 +97,7 @@ export default async function DashboardPage() {
               <p className="text-[11px] font-medium uppercase tracking-[0.1em] text-subtle">
                 This week
               </p>
-              <p className="mt-0.5 text-2xl font-bold tabular-nums">
+              <p className="mt-0.5 text-2xl font-bold num">
                 {thisWeek}
                 <span className="text-muted"> / {target}</span>
               </p>
@@ -128,7 +128,7 @@ export default async function DashboardPage() {
       <section className="animate-rise" style={{ animationDelay: "80ms" }}>
         <SectionTitle
           action={
-            <a href="/build" className="text-xs font-medium text-accent hover:underline">
+            <a href="/build" className="text-xs font-medium text-accent-text hover:underline">
               Edit routine
             </a>
           }

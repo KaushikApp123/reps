@@ -2,14 +2,14 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Reps — Gym Tracker",
-    short_name: "Reps",
+    name: "SetSwipe — Workout Tracker",
+    short_name: "SetSwipe",
     description: "Swipe to build your routine. Train. Track every rep.",
     start_url: "/",
     display: "standalone",
     orientation: "portrait",
-    background_color: "#0a0a0b",
-    theme_color: "#0a0a0b",
+    background_color: "#0b0b0c",
+    theme_color: "#0b0b0c",
     icons: [
       { src: "/icon-192.png", sizes: "192x192", type: "image/png", purpose: "any" },
       { src: "/icon-512.png", sizes: "512x512", type: "image/png", purpose: "any" },

@@ -1,30 +1,46 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Archivo, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import BottomNav from "@/components/bottom-nav";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+/** Headings — squarer and more editorial than the usual geometric sans. */
+const archivo = Archivo({
+  variable: "--font-archivo",
   subsets: ["latin"],
+  weight: ["600", "700", "800"],
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+/** Body and UI. */
+const plexSans = IBM_Plex_Sans({
+  variable: "--font-plex-sans",
   subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  display: "swap",
+});
+
+/** Weights, reps and timers, so digits keep their column as they change. */
+const plexMono = IBM_Plex_Mono({
+  variable: "--font-plex-mono",
+  subsets: ["latin"],
+  weight: ["500", "600"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Reps",
-  description: "Swipe to build your routine. Train. Track every rep.",
+  title: "SetSwipe",
+  description:
+    "Swipe to build your routine, then train with guided sessions, progressive-overload suggestions and automatic PR detection.",
+  applicationName: "SetSwipe",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "Reps",
+    title: "SetSwipe",
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#08080a",
+  themeColor: "#0b0b0c",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
@@ -39,7 +55,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${archivo.variable} ${plexSans.variable} ${plexMono.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-background">
         {children}
