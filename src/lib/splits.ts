@@ -150,6 +150,18 @@ const SPLITS: Record<string, SplitTemplate> = {
       { name: "Lower", required: LEGS, optional: ["Adductors", "Rectus Abdominis"] },
     ],
   },
+  upper_lower_ppl_5: {
+    key: "upper_lower_ppl_5",
+    name: "Upper / Lower / PPL",
+    blurb: "Five days: two full-body-ish upper and lower days, then a PPL block.",
+    days: [
+      { name: "Upper", required: UPPER, optional: ["Upper Traps"] },
+      { name: "Lower", required: LEGS, optional: ["Glute Medius", "Rectus Abdominis"] },
+      { name: "Push", required: PUSH, optional: ["Lower Chest"] },
+      { name: "Pull", required: PULL, optional: ["Brachialis", "Spinal Erectors"] },
+      { name: "Legs", required: LEGS, optional: ["Adductors", "Obliques"] },
+    ],
+  },
   arnold_6: {
     key: "arnold_6",
     name: "Arnold Split",
@@ -209,25 +221,35 @@ const SPLITS: Record<string, SplitTemplate> = {
 export function recommendSplits(daysPerWeek: number, goal: Goal): SplitTemplate[] {
   const d = Math.min(6, Math.max(2, daysPerWeek));
 
+  let options: SplitTemplate[];
   switch (d) {
     case 2:
-      return [SPLITS.full_body_2];
+      options = [SPLITS.full_body_2];
+      break;
     case 3:
       // Strength benefits most from frequent full-body compound practice.
-      return goal === "strength"
+      options = goal === "strength"
         ? [SPLITS.full_body_3, SPLITS.ppl_3]
         : [SPLITS.ppl_3, SPLITS.full_body_3];
+      break;
     case 4:
-      return [SPLITS.upper_lower_4];
+      options = [SPLITS.upper_lower_4];
+      break;
     case 5:
-      return [SPLITS.ppl_upper_lower_5, SPLITS.upper_lower_4];
+      options = [SPLITS.ppl_upper_lower_5, SPLITS.upper_lower_ppl_5];
+      break;
     case 6:
-      return goal === "hypertrophy"
+      options = goal === "hypertrophy"
         ? [SPLITS.arnold_6, SPLITS.ppl_6]
         : [SPLITS.ppl_6, SPLITS.arnold_6];
+      break;
     default:
-      return [SPLITS.full_body_3];
+      options = [SPLITS.full_body_3];
   }
+
+  // Never offer a split that doesn't fill the week the user asked for. A
+  // shorter split would leave days the app never programmes anything for.
+  return options.filter((s) => s.days.length === d);
 }
 
 export function getSplitTemplate(key: string): SplitTemplate | undefined {

@@ -145,6 +145,9 @@ export default function OnboardingWizard({ name }: { name: string | null }) {
                       </span>
                     )}
                   </div>
+                  <p className="mt-1 text-[11px] font-medium uppercase tracking-[0.08em] text-subtle">
+                    <span className="num">{s.days.length}</span> days a week
+                  </p>
                   <p className="mt-1.5 text-sm leading-relaxed text-muted">{s.blurb}</p>
                   <div className="mt-3 flex flex-wrap gap-1.5">
                     {s.days.map((d) => (
