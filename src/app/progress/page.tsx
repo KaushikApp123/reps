@@ -7,7 +7,7 @@ import {
   formatVolume,
   toDayKey,
 } from "@/lib/stats";
-import { Card, Stat, SectionTitle } from "@/components/ui";
+import { ButtonLink, Card, Stat, SectionTitle } from "@/components/ui";
 import Heatmap from "@/components/heatmap";
 import ExerciseChart, { type ExerciseSeries } from "@/components/exercise-chart";
 
@@ -132,6 +132,13 @@ export default async function ProgressPage() {
       <section className="animate-rise" style={{ animationDelay: "80ms" }}>
         <SectionTitle>Per-exercise progress</SectionTitle>
         <ExerciseChart series={series} unit={unit} />
+      </section>
+
+      <section className="animate-rise mt-7" style={{ animationDelay: "120ms" }}>
+        <SectionTitle>Progress photos</SectionTitle>
+        <ButtonLink href="/photos" variant="secondary" full>
+          📷 View progress photos
+        </ButtonLink>
       </section>
     </main>
   );
