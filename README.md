@@ -77,14 +77,49 @@ Full writeup with sources: **[docs/EXERCISE_SCIENCE.md](docs/EXERCISE_SCIENCE.md
 
 ---
 
+### 4. A coach that reads your actual numbers
+
+The **Coach** tab combines two things: a weekly digest written by a scheduled
+AWS Lambda, and a short review from the Gemini API.
+
+Everything factual in the model's prompt — total volume, which lifts have stalled,
+which muscles the routine never trains, recent PRs — is **computed by the app**.
+The model only phrases it, so the advice can't drift into invented training
+history. The page also lists exactly which figures the review was based on.
+
+The prompt forbids restating the data, praise without instruction, and vague verbs
+like "optimise". An early version produced *"continue completing 12 sessions"*;
+it now produces *"drop the overhead press to 90% and rebuild over three sessions,
+and move it to the front of the day while your shoulders are fresh."*
+
+### 5. Progress photos that stay private
+
+Photos upload straight from the browser to a private S3 bucket via a one-minute
+presigned `PUT`, so images never pass through the app server. Viewing uses a
+separate five-minute presigned `GET`. Only the object key is stored in Postgres,
+the bucket denies all public access, and content type and length are validated
+*before* signing — a signature is a capability, so it shouldn't be minted for
+something that would be rejected afterwards.
+
+---
+
 ## Stack
 
 - **Next.js 16** — App Router, Server Components, Server Actions
 - **TypeScript** throughout
 - **Supabase** — Postgres + Auth, row-level security on every table
+- **AWS** — S3 for photo storage, Lambda on an EventBridge schedule for the
+  weekly digest
+- **Google Gemini API** — coaching review, grounded in app-computed facts
 - **Tailwind CSS v4** — CSS-first config with custom design tokens
 - **Vitest** — 74 unit tests over the training logic
-- **Vercel** hosting
+- **Vercel** hosting, **GitHub Actions** keep-alive
+
+### Why a keep-alive job
+
+Supabase pauses free-tier projects after 7 days without database activity, which
+would take the whole deployment down. A scheduled GitHub Action reads one row
+every three days so the live demo doesn't quietly die.
 
 ## Architecture notes
 
@@ -118,6 +153,10 @@ drift.
 | Substitution ranking | `src/lib/substitutions.ts` |
 | Coverage grading | `src/lib/coverage.ts` |
 | Streaks, heatmap bucketing | `src/lib/stats.ts` |
+| Gemini client and prompt | `src/lib/gemini.ts` |
+| S3 presigning | `src/lib/s3.ts` |
+| Weekly digest Lambda | `aws/digest-lambda/index.mjs` |
+| AWS provisioning | `aws/setup.sh` |
 
 > Next.js 16 renamed Middleware to **Proxy** — the root file is `proxy.ts`, not
 > `middleware.ts`. A `middleware.ts` in this version silently never runs.
@@ -138,7 +177,8 @@ Then in the Supabase SQL Editor, run in order:
 1. `supabase/schema.sql` — tables + RLS policies
 2. `supabase/migrations/002_app_features.sql` — onboarding fields, PR flags
 3. `supabase/migrations/003_exercise_science.sql` — muscle-head metadata
-4. `supabase/seed_exercises.sql` — 201 tagged exercises (generated, re-runnable)
+4. `supabase/migrations/004_digests_and_photos.sql` — weekly digests, photos
+5. `supabase/seed_exercises.sql` — 201 tagged exercises (generated, re-runnable)
 
 ```bash
 npm run dev       # http://localhost:3000
@@ -157,6 +197,28 @@ npm run seed:demo
 This writes ~10 weeks of realistic history — progressive overload, PRs, and one deliberate
 plateau — through the demo user's own session, so no service-role key is needed. Re-run any
 time to reset the demo after visitors have poked at it.
+
+### Optional: AWS and Gemini
+
+Both features degrade gracefully — the app runs fine without either, showing an
+explanatory empty state instead.
+
+```bash
+bash aws/setup.sh   # S3 bucket, scoped IAM user, Lambda, EventBridge schedule
+```
+
+Then set the function's own secrets (the service-role key bypasses RLS, so it
+belongs only on the Lambda — never in the app or this repo):
+
+```bash
+aws lambda update-function-configuration \
+  --function-name setswipe-weekly-digest \
+  --environment "Variables={SUPABASE_URL=...,SUPABASE_SERVICE_ROLE_KEY=...}"
+```
+
+Add `GEMINI_API_KEY` (free tier, [aistudio.google.com/apikey](https://aistudio.google.com/apikey))
+plus `AWS_REGION`, `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` and
+`S3_PHOTOS_BUCKET` to `.env.local`.
 
 ---
 
