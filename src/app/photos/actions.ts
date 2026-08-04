@@ -17,6 +17,13 @@ export type UploadTicket =
   | { ok: false; error: string };
 
 /**
+ * Per-account ceiling. The demo account is public, so without a cap any
+ * visitor could fill the bucket; this bounds storage for every account
+ * rather than special-casing the demo.
+ */
+const MAX_PHOTOS_PER_USER = 30;
+
+/**
  * Issues a short-lived presigned PUT so the browser can upload directly to
  * S3. Type and size are validated here, before signing — a signature is a
  * capability, so it must never be minted for something we'd reject later.
@@ -36,6 +43,19 @@ export async function createUploadTicket(
   }
   if (!Number.isFinite(byteSize) || byteSize <= 0 || byteSize > MAX_PHOTO_BYTES) {
     return { ok: false, error: "Images must be under 8 MB." };
+  }
+
+  const supabase = await createClient();
+  const { count } = await supabase
+    .from("progress_photos")
+    .select("id", { count: "exact", head: true })
+    .eq("user_id", userId);
+
+  if ((count ?? 0) >= MAX_PHOTOS_PER_USER) {
+    return {
+      ok: false,
+      error: `You've reached the ${MAX_PHOTOS_PER_USER} photo limit. Delete one to add another.`,
+    };
   }
 
   const key = photoKey(userId, filename);
