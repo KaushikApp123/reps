@@ -1,4 +1,31 @@
-# Exercise list
+# SetSwipe — exercise list
+
+## What the app is
+
+SetSwipe builds you a training programme and guides you through each session.
+You give it your days per week, goal, and available equipment; it picks a split
+(Full Body, PPL, Upper/Lower, Arnold) and you swipe through exercises to build
+each day.
+
+What makes it different: it tracks muscles at the level of **individual heads** —
+side delt vs front delt, triceps long vs lateral head, quads vs rectus femoris,
+hamstrings hip function vs knee function. So a push day of nothing but pressing
+gets flagged for having no direct side delt or triceps long head work. A muscle
+worked only as a *secondary* counts as a gap, not a pass.
+
+During a session it suggests weights from your logged history ("Last: 135x8 ->
+try 140x8"), runs a rest timer, detects PRs, and offers ranked alternatives when
+a machine is taken.
+
+## What I'd like checked
+
+1. Is each exercise tagged to the right primary muscle(s)?
+2. Which of these are worth keeping, and which are redundant?
+3. Anything obviously missing?
+
+Fuller brief, including the reasoning the app bakes in: EXPERT_REVIEW_BRIEF.md
+
+---
 
 173 exercises.
 
