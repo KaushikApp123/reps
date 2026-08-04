@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 const TABS = [
   { href: "/dashboard", label: "Train", icon: DumbbellIcon },
   { href: "/build", label: "Routine", icon: CardsIcon },
+  { href: "/coach", label: "Coach", icon: SparkIcon },
   { href: "/progress", label: "Progress", icon: ChartIcon },
 ];
 
@@ -79,6 +80,25 @@ function CardsIcon({ active }: { active: boolean }) {
         stroke="currentColor"
         strokeWidth={active ? 2.4 : 1.9}
         strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+function SparkIcon({ active }: { active: boolean }) {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+        d="M12 4l1.6 4.4L18 10l-4.4 1.6L12 16l-1.6-4.4L6 10l4.4-1.6L12 4Z"
+        stroke="currentColor"
+        strokeWidth={active ? 2.2 : 1.8}
+        strokeLinejoin="round"
+      />
+      <path
+        d="M18 16.5l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7.7-1.8Z"
+        stroke="currentColor"
+        strokeWidth={active ? 2.2 : 1.8}
+        strokeLinejoin="round"
       />
     </svg>
   );
