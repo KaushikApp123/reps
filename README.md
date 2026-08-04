@@ -4,10 +4,9 @@ A workout app that pairs Tinder-style exercise discovery with training logic gro
 exercise-science research. Built as an installable PWA — add it to your home screen and it
 runs fullscreen like a native app, no App Store required.
 
-**[▶ Live demo](#)** — no signup needed; the demo account is preloaded with 10 weeks of
-training history.
-
-> Replace the link above with your Vercel URL once deployed.
+**[▶ Live demo — setswipe.vercel.app](https://setswipe.vercel.app)** — tap *Try the live
+demo*, no signup needed. The demo account is preloaded with 10 weeks of training history so
+the charts, streak and PRs are populated on arrival.
 
 ---
 

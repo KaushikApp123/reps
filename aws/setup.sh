@@ -56,7 +56,7 @@ aws s3api put-bucket-cors --bucket "$BUCKET" --cors-configuration '{
   "CORSRules": [{
     "AllowedHeaders": ["*"],
     "AllowedMethods": ["PUT", "GET"],
-    "AllowedOrigins": ["http://localhost:3000", "https://*.vercel.app"],
+    "AllowedOrigins": ["http://localhost:3000", "https://setswipe.vercel.app", "https://*.vercel.app"],
     "ExposeHeaders": ["ETag"],
     "MaxAgeSeconds": 3000
   }]
